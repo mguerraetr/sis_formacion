@@ -61,21 +61,4 @@ select pxp.f_insert_tgui ('Parametrización', 'Parametrización de los datos', '
 /********************************************F-DAT-YAC-SIGEFO-0-17/05/2017********************************************/
 
 
-/********************************************I-DAT-MANU-SIGEFO-0-14/07/2017********************************************/
-/* tcatalogo_tipo */
-
-INSERT INTO param.tcatalogo_tipo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_usuario_ai", "usuario_ai", "id_catalogo_tipo", "id_subsistema", "nombre", "tabla", "tabla_estado", "columna_estado")
-VALUES 
-  (1, NULL, E'2017-06-11 09:09:31.267', NULL, E'activo', NULL, NULL, 36, 29, E'prioridad_curso', E'tcurso', NULL, NULL);
-  
-/* tcatalogo */
-
-INSERT INTO param.tcatalogo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_usuario_ai", "usuario_ai", "id_catalogo", "codigo", "descripcion", "id_catalogo_tipo", "orden", "icono")
-VALUES 
-  (1, NULL, E'2017-06-11 09:10:42.841', NULL, E'activo', NULL, NULL, 139, E'pc_alta', E'Alta', 36, NULL, NULL),
-  (1, NULL, E'2017-06-11 09:11:11.891', NULL, E'activo', NULL, NULL, 140, E'pc_media', E'Media', 36, NULL, NULL),
-  (1, NULL, E'2017-06-11 09:11:30.931', NULL, E'activo', NULL, NULL, 141, E'pc_baja', E'Baja', 36, NULL, NULL);  
-
-/********************************************F-DAT-MANU-SIGEFO-0-14/07/2017********************************************/
-
 
