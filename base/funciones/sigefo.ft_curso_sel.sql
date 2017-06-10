@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION sigefo.ft_curso_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -98,6 +96,7 @@ BEGIN
 
                           FROM sigefo.tcurso scu
 						  JOIN param.tgestion g ON g.id_gestion=scu.id_gestion
+                          
                           UNION ALL
 
                           SELECT 

@@ -64,8 +64,7 @@ class MODCurso extends MODbase{
 		$this->captura('planificaciones','varchar');
 		
 	    $this->captura('id_funcionarios','varchar');
-		$this->captura('funcionarios','varchar');
-		
+		$this->captura('funcionarios','varchar');	
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

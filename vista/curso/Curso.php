@@ -248,7 +248,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         allowBlank: true,
                         anchor: '80%',
                         gwidth: 100,
-                        maxLength: 50
+                        maxLength: 500
                     },
                     type: 'TextField',
                     filters: {pfiltro: 'cur.nombre_curso', type: 'string'},
