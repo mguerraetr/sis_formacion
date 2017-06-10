@@ -71,7 +71,6 @@ class ACTCurso extends ACTbase{
             $this->objParam->addParametro('id_padre', $id_correlativo);
         }
 		
-		$this->objParam->addParametro('id_sw', 0);		
 		
         $this->objFunc = $this->create('MODCurso');
         $this->res = $this->objFunc->listarCursoAvanceArb();
@@ -112,6 +111,14 @@ class ACTCurso extends ACTbase{
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}	
 	
+	
+	function listarCursoAvanceDinamico(){
+		
+		$this->objFunc=$this->create('MODCurso');	
+		$this->res=$this->objFunc->listarCursoAvanceDinamico($this->objParam);
+		
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 			
 }
 

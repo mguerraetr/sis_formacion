@@ -16,7 +16,6 @@ var v_id_gestion;
 var v_id_correlativo = null;
 var v_id_curso = null;
 var v_padre='%';
-var v_sw=1;
 Phx.vista.FormCursoAvanceReal = Ext.extend(Phx.arbGridInterfaz, {
 		
     constructor: function (config) {

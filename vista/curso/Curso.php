@@ -9,11 +9,16 @@
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
+
 <script>
+	var v_maestro =null;
+	var valor;
+	var valor2;
     Phx.vista.Curso = Ext.extend(Phx.gridInterfaz, {
 
             constructor: function (config) {
                 this.maestro = config.maestro;
+                v_maestro = config.maestro;
                 //llama al constructor de la clase padre
                 Phx.vista.Curso.superclass.constructor.call(this, config);
                 this.init();
@@ -37,6 +42,105 @@ header("content-type: text/javascript; charset=UTF-8");
 	            Phx.vista.Curso.superclass.onButtonEdit.call(this);
 	            this.cargarPaiseLugares(this.Cmp.id_lugar_pais);
 	        },
+	        //
+	        onReloadPage: function (m) {
+	           this.maestro = m;
+	           console.log('maestro:',this.maestro);        
+	        },
+	        //	                
+          	onSubmit: function(o, x, force) {
+    			var me = this;    			
+				if (me.form.getForm().isValid() || force===true) {
+		            Phx.CP.loadingShow();
+		            Ext.apply(me.argumentSave, o.argument); 
+		            
+	            	var a = me.Cmp.origen.lastSelectionText;
+	            	if(a=='Externo' || a=='Interno'){
+	            		if(me.Cmp.id_proveedor.lastSelectionText === undefined || me.Cmp.id_proveedor.lastSelectionText === ''){
+	            			alert("Seleccione algun proveedor");
+		            		Phx.CP.loadingHide();
+	            		}else{
+	            			Ext.Ajax.request({
+								url: '../../sis_formacion/control/Curso/insertarCurso',
+								params: me.getValForm,
+								success: me.successSave,
+			                    argument: me.argumentSave,
+			                    failure: me.conexionFailure,
+			                    timeout: me.timeout,
+			                    scope: me
+							});	
+	            		}	
+	            	}else{
+	            		Ext.Ajax.request({
+							url: '../../sis_formacion/control/Curso/insertarCurso',
+							params: me.getValForm,
+							success: me.successSave,
+		                    argument: me.argumentSave,
+		                    failure: me.conexionFailure,
+		                    timeout: me.timeout,
+		                    scope: me
+						});
+	            	}			            	
+			            	
+		                     
+        		}					
+    	  	},
+    	  	//
+    	  	successSave: function(resp) {
+    	  		this.store.rejectChanges();
+				Phx.CP.loadingHide();
+				if(resp.argument && resp.argument.news){
+					if(resp.argument.def == 'reset'){
+					  this.onButtonNew();
+					}					
+					this.loadValoresIniciales()
+				}
+				else{
+					this.window.hide();
+				}		
+				this.reload();
+	        },
+    	  	//
+    	  	getValForm: function() {
+        		var resp = {};
+		        for (var i = 0; i < this.Componentes.length; i++) {
+		            var ac = this.Atributos[i];
+		            var cmp = this.Componentes[i]
+		            var swc = true;
+		            if (ac.vista) {
+		                swc = false;
+		                for (var _p in ac.vista) {
+		                    if (this.nombreVista == ac.vista[_p]) {
+		                        swc = true;
+		                        break;
+		                    }
+		                }
+		            }		
+		            if (ac.form != false && swc) {                
+		                var _name = ac.config.name;
+		                if (cmp.getValue() != '' && ac.type == 'DateField' && ac.config.format) {
+		                    resp[_name] = cmp.getValue().dateFormat(ac.config.format)
+		                    } 
+		              else {
+		              	    if(ac.type == 'ComboBox' && ac.config.rawValueField){
+		              	    	resp[_name] =cmp.getValue();
+		              	    	if ( cmp.getRawValue()==resp[_name] ){
+		              	    		resp[ac.config.rawValueField] = cmp.getRawValue();
+		              	    		resp[_name]=null;
+		              	    	}
+		              	    }
+		              	    else{
+		                        resp[_name] = cmp.getValue();
+		              	    }
+		                }
+		            }
+		        }
+		        this.agregarArgsExtraSubmit();
+		        this.agregarArgsBaseSubmit();
+		        Ext.apply(resp, this.argumentExtraSubmit);
+		        Ext.apply(resp, this.argumentBaseSubmit);
+		        return resp
+		    },    	  	
 			//
             Atributos: [
                 {
@@ -125,7 +229,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         pageSize: 15,
                         queryDelay: 1000,
                         anchor: '80%',
-                        gwidth: 150,
+                        gwidth: 80,
                         minChars: 2,
                         renderer: function (value, p, record) {
                             return String.format('{0}', record.data['gestion']);
@@ -171,13 +275,12 @@ header("content-type: text/javascript; charset=UTF-8");
                     config: {
                         name: 'cod_tipo',
                         fieldLabel: 'Tipo',
-                        anchor: '90%',
                         tinit: false,
                         allowBlank: false,
                         emptyText: 'Elija una opción...',
                         origen: 'CATALOGO',
                         gdisplayField: 'tipo',
-                        gwidth: 200,
+                        gwidth: 70,
                         anchor: '80%',
                         baseParams: {
                             cod_subsistema: 'SIGEFO',
@@ -200,13 +303,12 @@ header("content-type: text/javascript; charset=UTF-8");
                     config: {
                         name: 'cod_prioridad',
                         fieldLabel: 'Prioridad',
-                        anchor: '90%',
                         tinit: false,
                         allowBlank: false,
                         emptyText: 'Elija una opción...',
                         origen: 'CATALOGO',
                         gdisplayField: 'prioridad',
-                        gwidth: 200,
+                        gwidth: 70,
                         anchor: '80%',
                         baseParams: {
                             cod_subsistema: 'SIGEFO',
@@ -229,13 +331,12 @@ header("content-type: text/javascript; charset=UTF-8");
                     config: {
                         name: 'cod_clasificacion',
                         fieldLabel: 'Clasificación',
-                        anchor: '90%',
                         tinit: false,
                         allowBlank: false,
                         emptyText: 'Elija una opción...',
                         origen: 'CATALOGO',
                         gdisplayField: 'clasificacion',
-                        gwidth: 200,
+                        gwidth: 100,
                         anchor: '80%',
                         baseParams: {
                             cod_subsistema: 'SIGEFO',
@@ -544,7 +645,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     config: {
                         name: 'id_proveedor',
                         fieldLabel: 'Proveedor',
-                        allowBlank: false,
+                        allowBlank: true,
                         emptyText: 'Proveedores...',
                         blankText: 'Debe seleccionar un proveedor',
                         store: new Ext.data.JsonStore({
@@ -581,6 +682,70 @@ header("content-type: text/javascript; charset=UTF-8");
                     type: 'ComboBox',
                     id_grupo: 0,
                     filters: {pfiltro: 'desc_proveedor', type: 'string'},
+                    grid: true,
+                    form: true
+                },                
+                {
+                    config: {
+                        name: 'evaluacion',
+                        fieldLabel: 'Evaluacion',
+                        tinit: false,
+                        allowBlank: true,
+                        emptyText: 'Elija una opción...',
+                        origen: 'CATALOGO',
+                        gdisplayField: 'evaluacion',
+                        gwidth: 50,
+                        anchor: '80%',
+                        baseParams: {
+                            cod_subsistema: 'SIGEFO',
+                            catalogo_tipo: 'evaluacion_curso'
+                        },
+                        renderer: function (value, p, record) {                   	
+                            return String.format('{0}', record.data['evaluacion']);
+                        },listeners: {
+						   'afterrender': function(combo){				   
+    							combo.setValue('NO');        
+						  	}
+						}
+                    },
+                    type: 'ComboRec',
+                    id_grupo: 0,
+                    filters: {
+                        pfiltro: 'sigefoco.evaluacion',
+                        type: 'string'
+                    },
+                    grid: true,
+                    form: true
+                },
+                {
+                    config: {
+                        name: 'certificacion',
+                        fieldLabel: 'Certificacion',
+                        tinit: false,
+                        allowBlank: true,
+                        emptyText: 'Elija una opción...',
+                        origen: 'CATALOGO',
+                        gdisplayField: 'certificacion',
+                        gwidth: 50,
+                        anchor: '80%',
+                        baseParams: {
+                            cod_subsistema: 'SIGEFO',
+                            catalogo_tipo: 'certificacion_curso'
+                        },
+                        renderer: function (value, p, record) {   	
+                            return String.format('{0}', record.data['certificacion']);
+                        },listeners: {
+						   'afterrender': function(combo){			  
+    							combo.setValue('NO');       
+						  	}
+						}
+                    },
+                    type: 'ComboRec',
+                    id_grupo: 0,
+                    filters: {
+                        pfiltro: 'sigefoco.certificacion',
+                        type: 'string'
+                    },
                     grid: true,
                     form: true
                 },
@@ -697,6 +862,9 @@ header("content-type: text/javascript; charset=UTF-8");
                 }
             ],
             tam_pag: 50,
+            argumentSave: {},
+            timeout: Phx.CP.config_ini.timeout,
+    		conexionFailure: Phx.CP.conexionFailure,
             title: 'Curso',
             ActSave: '../../sis_formacion/control/Curso/insertarCurso',
             ActDel: '../../sis_formacion/control/Curso/eliminarCurso',
@@ -711,6 +879,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name: 'horas', type: 'numeric'},
                 {name: 'cod_tipo', type: 'string'},
                 {name: 'cod_prioridad', type: 'string'},
+                {name: 'evaluacion', type: 'string'},
+                {name: 'certificacion', type: 'string'},
                 {name: 'cod_clasificacion', type: 'string'},
                 {name: 'nombre_curso', type: 'string'},
                 {name: 'expositor', type: 'string'},

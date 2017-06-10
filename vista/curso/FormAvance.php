@@ -211,7 +211,7 @@ Phx.vista.FormAvance= Ext.extend(Phx.gridInterfaz, {
 	title:'Linea de Avance',
 	ActSave:'../../sis_formacion/control/Curso/insertarAvanceReal',
 	ActDel:'../../sis_formacion/control/LineaAvance/eliminarLineaAvance',
-	ActList:'../../sis_formacion/control/Curso/listarFormCursoAvanceArb',
+	ActList:'../../sis_formacion/control/Curso/listarCursoAvanceDinamico',
 	bdel:false,
 	bsave:true, 
 	bedit:false, 

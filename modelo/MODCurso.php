@@ -45,13 +45,17 @@ class MODCurso extends MODbase{
 		$this->captura('id_usuario_ai','int4');
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('fecha_mod','timestamp');
-		$this->captura('usr_reg','varchar');
-		$this->captura('usr_mod','varchar');
+		
+		$this->captura('evaluacion','varchar');
+		$this->captura('certificacion','varchar');
 		
 		$this->captura('gestion','int4');
 		$this->captura('nombre','varchar');
 		$this->captura('nombre_pais','varchar');
 		$this->captura('desc_proveedor','varchar');
+		
+		$this->captura('usr_reg','varchar');
+		$this->captura('usr_mod','varchar');
 		
 		$this->captura('id_competencias','varchar');
 		$this->captura('competencias','varchar');
@@ -86,7 +90,8 @@ class MODCurso extends MODbase{
 		$this->setParametro('origen','origen','varchar');
 		$this->setParametro('fecha_inicio','fecha_inicio','date');
 		$this->setParametro('objetivo','objetivo','varchar');
-		$this->setParametro('estado_reg','estado_reg','varchar');
+		
+		//$this->setParametro('estado_reg','estado_reg','varchar');
 		
 		$this->setParametro('cod_tipo','cod_tipo','varchar');
 		$this->setParametro('cod_prioridad','cod_prioridad','varchar');
@@ -100,7 +105,10 @@ class MODCurso extends MODbase{
 		
 		$this->setParametro('id_competencias','id_competencias','varchar');
 	    $this->setParametro('id_funcionarios','id_funcionarios','varchar');
-		$this->setParametro('id_planificaciones','id_planificaciones','varchar');				
+		$this->setParametro('id_planificaciones','id_planificaciones','varchar');	
+		
+		$this->setParametro('evaluacion','evaluacion','varchar');	
+		$this->setParametro('certificacion','certificacion','varchar');				
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -138,7 +146,8 @@ class MODCurso extends MODbase{
 		$this->setParametro('id_competencias','id_competencias','varchar');
 	    $this->setParametro('id_funcionarios','id_funcionarios','varchar');
 		$this->setParametro('id_planificaciones','id_planificaciones','varchar');		
-
+		$this->setParametro('evaluacion','evaluacion','varchar');	
+		$this->setParametro('certificacion','certificacion','varchar');		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -195,7 +204,6 @@ class MODCurso extends MODbase{
         $id_padre = $this->objParam->getParametro('id_padre');
         $this->setParametro('id_padre', 'id_padre', 'varchar');	        
 		$this->setParametro('id_gestion', 'id_gestion', 'int4');
-		$this->setParametro('id_sw', 'id_sw', 'int4');
 		
         //Definicion de la lista del resultado del query
         $this->captura('id_correlativo','int4');
@@ -211,6 +219,8 @@ class MODCurso extends MODbase{
 		$this->captura('id_correlativo_key','int4');
 		$this->captura('horas_temp','int4');
 		$this->captura('cantidad_temp','int4');
+		
+	
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -263,11 +273,11 @@ class MODCurso extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}	
-	
-	function insertarAvanceReal(){
-		$this->procedimiento='sigefo.ft_curso_ime';
+	//FALTA  **************************************
+	function listarCursoAvanceDinamico(){
+		$this->procedimiento='sigefo.ft_curso_sel';
 		$this->transaccion='SIGEFO_CUR_AREAL_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->tipo_procedimiento='SEL';
 				
 		//Define los parametros para la funcion
         $datos = $this->objParam->getParametro('datos');

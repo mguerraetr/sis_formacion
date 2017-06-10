@@ -337,3 +337,31 @@ ON DELETE CASCADE
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 /***********************************F-DEP-JUAN-SIGEFO-0-18/05/2017****************************************/
+
+
+
+/***********************************I-DEP-MANU-SIGEFO-0-18/06/2017****************************************/
+ALTER TABLE sigefo.tavance_real
+  ADD CONSTRAINT tavance_real_fk FOREIGN KEY (id_uo)
+    REFERENCES orga.tuo(id_uo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+    
+ALTER TABLE sigefo.tavance_real
+  ADD CONSTRAINT tavance_real_fk1 FOREIGN KEY (id_curso)
+    REFERENCES sigefo.tcurso(id_curso)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;    
+
+ALTER TABLE sigefo.tcurso
+  ALTER COLUMN nombre_curso TYPE VARCHAR(500) COLLATE pg_catalog."default";
+
+ALTER TABLE sigefo.tcurso
+  ADD COLUMN evaluacion VARCHAR(2);
+
+ALTER TABLE sigefo.tcurso
+  ADD COLUMN certificacion VARCHAR(2);
+/***********************************F-DEP-MANU-SIGEFO-0-18/06/2017****************************************/

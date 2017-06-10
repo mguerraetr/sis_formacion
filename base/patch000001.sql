@@ -158,3 +158,22 @@ ALTER TABLE sigefo.tcurso
 ALTER TABLE sigefo.tcurso
   ADD COLUMN peso INTEGER;
 /***********************************F-SCP-MANU-SIGEFO-0-30/06/2017****************************************/
+
+
+/***********************************I-SCP-MANU-SIGEFO-0-18/07/2017****************************************/
+CREATE TABLE sigefo.tavance_real (
+  id_avance_real SERIAL NOT NULL,
+  id_uo INTEGER,
+  id_curso INTEGER,
+  mes VARCHAR(50),
+  avance_real NUMERIC(10,2),
+  PRIMARY KEY(id_avance_real)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+/***********************************F-SCP-MANU-SIGEFO-0-18/07/2017****************************************/
+
+
+
+

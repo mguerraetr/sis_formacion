@@ -43,8 +43,8 @@ header("content-type: text/javascript; charset=UTF-8");
 					{						
                         'id_planificacion': filas[0].id
                     },
-					success: me.successSaveAprobar,
-                    failure: me.conexionFailureAprobar,
+					//success: me.successSaveAprobar,
+                    //failure: me.conexionFailureAprobar,
                     timeout: me.timeout,
                     scope: me
 				});		
