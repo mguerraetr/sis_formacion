@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION sigefo.ft_curso_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -49,73 +51,134 @@ BEGIN
   	IF (p_transaccion = 'SIGEFO_SCU_SEL')
 		THEN
           BEGIN 
-              v_consulta:='select
-                            scu.id_curso,
-                            scu.id_gestion,
-                            scu.id_lugar,
-                            scu.id_lugar_pais,
-                            scu.id_proveedor,
-                            scu.origen,
-                            scu.fecha_inicio,
-                            scu.objetivo,
-                            scu.estado_reg,
-                            scu.cod_tipo,
-                            scu.cod_prioridad,
-                            scu.horas,
-                            scu.nombre_curso,
-                            scu.cod_clasificacion,
-                            scu.expositor,
-                            scu.contenido,
-                            scu.fecha_fin,
-                            scu.fecha_reg,
-                            scu.usuario_ai,
-                            scu.id_usuario_reg,
-                            scu.id_usuario_ai,
-                            scu.id_usuario_mod,
-                            scu.fecha_mod,
-                            usu1.cuenta as usr_reg,
-                            usu2.cuenta as usr_mod,
-                            g.gestion,
-                            l.nombre,
-                            lp.nombre as nombre_pais,
-                            p.desc_proveedor,
-                                                    
-                            (select array_to_string( array_agg( cc.id_competencia), '','' ) 
-                            from sigefo.tcurso_competencia cc join sigefo.tcurso c on c.id_curso=cc.id_curso 
-                            where cc.id_curso=scu.id_curso)::VARCHAR as id_competencias,
-                                                    
-                            (select array_to_string( array_agg( co.competencia), ''<br>'' ) 
-                            from sigefo.tcurso_competencia cc join sigefo.tcurso c on c.id_curso=cc.id_curso 
-                            join sigefo.tcompetencia co on co.id_competencia=cc.id_competencia
-                            where cc.id_curso=scu.id_curso)::VARCHAR as competencias,
-                                                    
-                            (select array_to_string( array_agg( cp.id_planificacion), '','' ) 
-                            from sigefo.tcurso_planificacion cp join sigefo.tcurso c on c.id_curso=cp.id_curso 
-                            where cp.id_curso=scu.id_curso)::VARCHAR as id_planificaciones,
-                                                    
-                            (select array_to_string( array_agg( pl.nombre_planificacion), ''<br>'' ) 
-                            from sigefo.tcurso_planificacion cp join sigefo.tcurso c on c.id_curso=cp.id_curso 
-                            join sigefo.tplanificacion pl on pl.id_planificacion=cp.id_planificacion
-                            where cp.id_curso=scu.id_curso)::VARCHAR as competencias,
-                                                    
-                            (select array_to_string( array_agg( cf.id_funcionario), '','' ) 
-                            from sigefo.tcurso_funcionario cf join sigefo.tcurso c on c.id_curso=cf.id_curso 
-                            where cf.id_curso=scu.id_curso)::VARCHAR as id_funcionarios,
-                                                    
-                            (select array_to_string( array_agg(PERSON.nombre_completo2), ''<br>'' ) 
-                            from sigefo.tcurso_funcionario cf join sigefo.tcurso c on c.id_curso=cf.id_curso 
-                            join orga.tfuncionario FUNCIO on FUNCIO.id_funcionario=cf.id_funcionario
-                            join SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
-                                                    
-                            where cf.id_curso=scu.id_curso)::VARCHAR as funcionarios
-                            from sigefo.tcurso scu
-                            inner join segu.tusuario usu1 on usu1.id_usuario = scu.id_usuario_reg
-                            left join segu.tusuario usu2 on usu2.id_usuario = scu.id_usuario_mod
-                            join param.tgestion g on g.id_gestion=scu.id_gestion
-                            join param.tlugar l on l.id_lugar=scu.id_lugar
-                            join param.tlugar lp on lp.id_lugar=scu.id_lugar_pais
-                            join param.vproveedor p on p.id_proveedor= scu.id_proveedor
-                            where';
+              v_consulta:='SELECT 
+                          scu.id_curso,
+                          scu.id_gestion,
+                          scu.id_lugar,
+                          scu.id_lugar_pais,
+                          scu.id_proveedor,
+                          scu.origen,
+                          scu.fecha_inicio,
+                          scu.objetivo,
+                          scu.estado_reg,
+                          scu.cod_tipo,
+                          scu.cod_prioridad,
+                          scu.horas,
+                          scu.nombre_curso,
+                          scu.cod_clasificacion,
+                          scu.expositor,
+                          scu.contenido,
+                          scu.fecha_fin,
+                          scu.fecha_reg,
+                          scu.usuario_ai,
+                          scu.id_usuario_reg,
+                          scu.id_usuario_ai,
+                          scu.id_usuario_mod,
+                          scu.fecha_mod,
+
+                          scu.evaluacion,
+                          scu.certificacion,
+
+                          g.gestion AS gestion,
+                          ''-'' :: VARCHAR  AS nombre,
+                          ''-'' :: VARCHAR  AS nombre_pais,
+                          ''-'' :: VARCHAR  AS desc_proveedor,	
+
+                          ''-'' :: VARCHAR  AS usr_reg,
+                          ''-'' :: VARCHAR  AS usr_mod,
+
+                          ''-'' :: VARCHAR  AS id_competencias,
+                          ''-'' :: VARCHAR  AS competencias,
+
+                          ''-'' :: VARCHAR  AS id_planificaciones,
+                          ''-'' :: VARCHAR  AS planificaciones,
+
+                          ''-'' :: VARCHAR  AS id_funcionarios,
+                          ''-'' :: VARCHAR  AS funcionarios
+
+                          FROM sigefo.tcurso scu
+						  JOIN param.tgestion g ON g.id_gestion=scu.id_gestion
+                          UNION ALL
+
+                          SELECT 
+                          scu.id_curso,
+                          scu.id_gestion,
+                          scu.id_lugar,
+                          scu.id_lugar_pais,
+                          scu.id_proveedor,
+                          scu.origen,
+                          scu.fecha_inicio,
+                          scu.objetivo,
+                          scu.estado_reg,
+                          scu.cod_tipo,
+                          scu.cod_prioridad,
+                          scu.horas,
+                          scu.nombre_curso,
+                          scu.cod_clasificacion,
+                          scu.expositor,
+                          scu.contenido,
+                          scu.fecha_fin,
+                          scu.fecha_reg,
+                          scu.usuario_ai,
+                          scu.id_usuario_reg,
+                          scu.id_usuario_ai,
+                          scu.id_usuario_mod,
+                          scu.fecha_mod,
+
+                          scu.evaluacion,
+                          scu.certificacion,
+
+                          g.gestion,
+                          l.nombre,
+                          lp.nombre AS nombre_pais,
+                          p.desc_proveedor,
+
+                          usu1.cuenta AS usr_reg,
+                          usu2.cuenta AS usr_mod,
+                                                                                                        
+                          (SELECT array_to_string( array_agg( cc.id_competencia), '','' ) 
+                          FROM sigefo.tcurso_competencia cc 
+                          JOIN sigefo.tcurso c ON c.id_curso=cc.id_curso 
+                          WHERE cc.id_curso=scu.id_curso)::VARCHAR AS id_competencias,
+                                                                                                        
+                          (SELECT array_to_string( array_agg( co.competencia), ''<br>'' ) 
+                          FROM sigefo.tcurso_competencia cc 
+                          JOIN sigefo.tcurso c ON c.id_curso=cc.id_curso 
+                          JOIN sigefo.tcompetencia co ON co.id_competencia=cc.id_competencia
+                          WHERE cc.id_curso=scu.id_curso)::VARCHAR AS competencias,
+                                                                                                        
+                          (SELECT array_to_string( array_agg( cp.id_planificacion), '','' ) 
+                          FROM sigefo.tcurso_planificacion cp 
+                          JOIN sigefo.tcurso c ON c.id_curso=cp.id_curso 
+                          WHERE cp.id_curso=scu.id_curso)::VARCHAR AS id_planificaciones,
+                                                                                                        
+                          (SELECT array_to_string( array_agg( pl.nombre_planificacion), ''<br>'' ) 
+                          FROM sigefo.tcurso_planificacion cp 
+                          JOIN sigefo.tcurso c ON c.id_curso=cp.id_curso 
+                          JOIN sigefo.tplanificacion pl ON pl.id_planificacion=cp.id_planificacion
+                          WHERE cp.id_curso=scu.id_curso)::VARCHAR AS planificaciones,
+                                                                                                        
+                          (SELECT array_to_string( array_agg( cf.id_funcionario), '','' ) 
+                          FROM sigefo.tcurso_funcionario cf 
+                          JOIN sigefo.tcurso c ON c.id_curso=cf.id_curso 
+                          WHERE cf.id_curso=scu.id_curso)::VARCHAR AS id_funcionarios,
+                                                                                                        
+                          (SELECT array_to_string( array_agg(PERSON.nombre_completo2), ''<br>'' ) 
+                          FROM sigefo.tcurso_funcionario cf 
+                          JOIN sigefo.tcurso c ON c.id_curso=cf.id_curso 
+                          JOIN orga.tfuncionario FUNCIO ON FUNCIO.id_funcionario=cf.id_funcionario
+                          JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona                                                   
+                          WHERE cf.id_curso=scu.id_curso)::VARCHAR AS funcionarios
+
+                          FROM sigefo.tcurso scu
+                          INNER JOIN segu.tusuario usu1 ON usu1.id_usuario = scu.id_usuario_reg
+                          LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = scu.id_usuario_mod
+                          JOIN param.tgestion g ON g.id_gestion=scu.id_gestion
+                          JOIN param.tlugar l ON l.id_lugar=scu.id_lugar
+                          JOIN param.tlugar lp ON lp.id_lugar=scu.id_lugar_pais
+                          JOIN param.vproveedor p ON p.id_proveedor= scu.id_proveedor
+                          
+                          WHERE';
                 v_consulta:=v_consulta || v_parametros.filtro;
                 v_consulta:=
                 v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
@@ -327,7 +390,7 @@ BEGIN
                               --SE CREO UN ARTIFICIO PARA MOSTRAR PADRE-HIJO
                               IF(item.id_uo_t = 0)
                               	THEN 
-                                     v_aux := v_aux || ''''|| '>>>>  ' || item.nombre_curso ||''',';  
+                                     v_aux := v_aux || ''''|| '>>> ' || item.nombre_curso ||''',';  
                                 ELSE
                                 	 v_aux := v_aux || ''''|| item.nombre_unidad ||''',';      
                               END IF;                             
@@ -433,22 +496,21 @@ BEGIN
                                   t.nombre_unidad,
                                   0 :: INTEGER AS id_curso,
                                   0 :: VARCHAR AS nombre_curso,
-                                  0 :: VARCHAR AS cod_prioridad,
+                                  'vacio' :: VARCHAR AS cod_prioridad,
                                   CASE
                                       WHEN (t.id_uo is not  null)
                                           THEN 'raiz'::VARCHAR
                                   END AS tipo_nodo,
                                   0 :: INTEGER as horas,
-                                  0 :: INTEGER AS cantidad,
-								  0 :: INTEGER AS prioridad
+                                  0 :: INTEGER AS cantidad
                                   
                                   FROM orga.tuo t 
                                   INNER JOIN sigefo.tplanificacion_uo tp ON tp.id_uo = t.id_uo
                                   INNER JOIN sigefo.tplanificacion p ON p.id_planificacion = tp.id_planificacion
                                   INNER JOIN sigefo.tcurso_planificacion cp ON cp.id_planificacion = p.id_planificacion
                                   INNER JOIN sigefo.tcurso c ON c.id_curso=cp.id_curso
-                                  INNER JOIN sigefo.tcurso_funcionario cf ON cf.id_curso=c.id_curso                                               
-                                  WHERE t.estado_reg='activo'  
+                                  INNER JOIN sigefo.tcurso_funcionario cf ON cf.id_curso=c.id_curso   
+                                  WHERE t.estado_reg='activo'                                              
                                   GROUP BY t.id_uo,t.nombre_unidad,c.id_curso,c.nombre_curso,c.cod_prioridad,p.id_planificacion,cf.id_curso
                                                                                                                   
                                   UNION ALL
@@ -477,16 +539,7 @@ BEGIN
                                           THEN 'hijo'::varchar
                                   END AS tipo_nodo,
                                   c.horas :: INTEGER,
-                                  count (cf.id_curso) AS cantidad,
-                                  
-                                  CASE
-                                    WHEN (c.cod_prioridad = 'Alta' )
-                                      THEN 3 :: INTEGER
-									WHEN (c.cod_prioridad = 'Media' )
-                                      THEN 2 :: INTEGER
-                                    WHEN (c.cod_prioridad = 'Baja' )
-                                      THEN 1 :: INTEGER
-                                  END AS id_prioridad
+                                  count (cf.id_curso) AS cantidad
                                   
                                   FROM orga.tuo t
                                   INNER JOIN sigefo.tplanificacion_uo tp ON tp.id_uo = t.id_uo
@@ -494,7 +547,7 @@ BEGIN
                                   INNER JOIN sigefo.tcurso_planificacion cp ON cp.id_planificacion = p.id_planificacion
                                   INNER JOIN sigefo.tcurso c ON c.id_curso=cp.id_curso
                                   INNER JOIN sigefo.tcurso_funcionario cf ON cf.id_curso=c.id_curso                                                                                      
-                                  WHERE t.estado_reg='activo' AND c.id_gestion = v_parametros.id_gestion                                                                                                                                                                        
+                                  WHERE c.id_gestion = v_parametros.id_gestion AND t.estado_reg='activo'                                                                                                                                                                        
                                   GROUP BY t.id_uo,t.nombre_unidad,c.id_curso,c.nombre_curso,c.cod_prioridad,p.id_planificacion,cf.id_curso
                                   ORDER BY id_uo,tipo_nodo DESC    
                               )LOOP
@@ -506,7 +559,7 @@ BEGIN
                               								id_uo_t_temp,
                               								id_uo_padre_temp,
                                                             id_uo_temp,
-                         	                                nombre_unidad_temp,
+                                                            nombre_unidad_temp,
                                                             id_curso_temp,
                                                             nombre_curso_temp,
                                                             cod_prioridad_temp,
@@ -519,34 +572,34 @@ BEGIN
                               v_aux := v_aux || item.id_uo_t||',';                                                                                          
                               v_aux := v_aux || item.id_uo_padre||',';                              
                               v_aux := v_aux || item.id_uo||',';
-                              --SE CREO UN ARTIFICIO PARA MOSTRAR PADRE-HIJO
+                          	  --SE CREO UN ARTIFICIO PARA MOSTRAR PADRE-HIJO
                               IF(item.id_uo_t = 0)
                               	THEN 
                                      v_aux := v_aux || ''''|| item.nombre_curso ||''',';  
                                 ELSE
                                 	 v_aux := v_aux || ''''|| item.nombre_unidad ||''',';      
-                              END IF;                             
-                                       	                                                                                
-                              v_aux := v_aux || item.id_curso||',';                                                            
-                              v_aux := v_aux || ''''|| item.nombre_curso||''','; 
-                              IF(item.cod_prioridad = '0')
-                              	THEN 
-                                     v_aux := v_aux || ''''|| '-' ||''',';
-                                ELSE
-                                	 v_aux := v_aux || ''''|| item.cod_prioridad||''',';     
-                              END IF;  
+                              END IF;
+     						  v_aux := v_aux || item.id_curso||',';
+                              v_aux := v_aux || ''''|| item.nombre_curso ||''','; 
                               
-                                                            
-                              v_aux := v_aux || ''''|| item.tipo_nodo||''',';                               
+                              IF(item.cod_prioridad = 'vacio')
+                              	THEN                                 
+									v_aux := v_aux || ''''|| '-' ||''',';
+                                ELSE                              
+                                	v_aux := v_aux || ''''|| item.cod_prioridad||''',';     
+                              END IF; 
+                              
+                              v_aux := v_aux || ''''|| item.tipo_nodo||''','; 
+                              
                               IF(item.id_uo_t = 0)
                               	THEN 
                                      v_aux := v_aux || v_count||','; 
                                 ELSE
-                                	 v_aux := v_aux || item.id_uo_t||',';     
-                              END IF;                             
+                                	 v_aux := v_aux || item.id_uo_t||','; 
+                              END IF;   
+                              
                               v_aux := v_aux || item.horas||','; 
                               v_aux := v_aux || item.cantidad||')';
-                              
                               EXECUTE(v_aux);                                                                                                            
                                                                                                                                                                   
                           END LOOP;                              
@@ -564,15 +617,32 @@ BEGIN
                                        id_uo_t_temp,	
                                        id_uo_padre_temp, 
                                        id_uo_temp,
-                                       nombre_unidad_temp, 
-                                       id_curso_temp, 
-                                       nombre_curso_temp,                                        
+                                       nombre_unidad_temp,
+                                       id_curso_temp,
+                                       nombre_curso_temp,
                                        cod_prioridad_temp,
                                        tipo_nodo_temp,
                                        id_correlativo_key,
-    								   horas_temp,                                       
-                                       cantidad_temp
-                                       FROM ttemporal WHERE ' || v_consultaTemp;                 	
+                                       horas_temp,
+                                       cantidad_temp 
+                                       FROM ttemporal WHERE ' || v_consultaTemp;
+					      /*************
+                          FOR item1 IN(SELECT 
+                                       id_correlativo,
+                                       id_uo_t_temp,	
+                                       id_uo_padre_temp, 
+                                       id_uo_temp,
+                                       nombre_unidad_temp,
+                                       id_curso_temp,
+                                       cod_prioridad_temp,
+                                       tipo_nodo_temp,
+                                       id_correlativo_key,
+                                       horas_temp,
+                                       cantidad_temp 
+                                       FROM ttemporal)loop
+                          RAISE EXCEPTION '%',item1.id_correlativo_key;                                 
+                          END LOOP;                  	
+						  *************/  
                       END IF;                                                                                               
                 RETURN v_consulta;       	
 		    END;             
