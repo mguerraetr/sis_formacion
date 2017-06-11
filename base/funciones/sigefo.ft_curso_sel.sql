@@ -1,3 +1,4 @@
+--------------- SQL ---------------
 
 CREATE OR REPLACE FUNCTION sigefo.ft_curso_sel (
   p_administrador integer,
@@ -51,95 +52,95 @@ BEGIN
 		THEN
           BEGIN 
               v_consulta:='SELECT 
-                          scu.id_curso,
-                          scu.id_gestion,
-                          scu.id_lugar,
-                          scu.id_lugar_pais,
-                          scu.id_proveedor,
-                          scu.origen,
-                          scu.fecha_inicio,
-                          scu.objetivo,
-                          scu.estado_reg,
-                          scu.cod_tipo,
-                          scu.cod_prioridad,
-                          scu.horas,
-                          scu.nombre_curso,
-                          scu.cod_clasificacion,
-                          scu.expositor,
-                          scu.contenido,
-                          scu.fecha_fin,
-                          scu.fecha_reg,
-                          scu.usuario_ai,
-                          scu.id_usuario_reg,
-                          scu.id_usuario_ai,
-                          scu.id_usuario_mod,
-                          scu.fecha_mod,
-                          scu.evaluacion,
-                          scu.certificacion,
-                          g.gestion AS gestion,
+scu.id_curso,
+scu.id_gestion,
+scu.id_lugar,
+scu.id_lugar_pais,
+scu.id_proveedor,
+scu.origen,
+scu.fecha_inicio,
+scu.objetivo,
+scu.estado_reg,
+scu.cod_tipo,
+scu.cod_prioridad,
+scu.horas,
+scu.nombre_curso,
+scu.cod_clasificacion,
+scu.expositor,
+scu.contenido,
+scu.fecha_fin,
+scu.fecha_reg,
+scu.usuario_ai,
+scu.id_usuario_reg,
+scu.id_usuario_ai,
+scu.id_usuario_mod,
+scu.fecha_mod,
+scu.evaluacion,
+scu.certificacion,
+g.gestion AS gestion,
 
-                          (SELECT lp.nombre
-                          FROM param.tlugar lp
-                          WHERE lp.id_lugar=scu.id_lugar_pais ) :: VARCHAR  AS nombre_pais,
+(SELECT lp.nombre
+FROM param.tlugar lp
+WHERE lp.id_lugar=scu.id_lugar_pais ) :: VARCHAR  AS nombre_pais,
 
-                          (SELECT lp.nombre
-                          FROM param.tlugar lp
-                          WHERE lp.id_lugar=scu.id_lugar ) :: VARCHAR  AS nombre,
+(SELECT lp.nombre
+FROM param.tlugar lp
+WHERE lp.id_lugar=scu.id_lugar ) :: VARCHAR  AS nombre,
 
-                          (SELECT p.desc_proveedor
-                          FROM param.vproveedor p
-                          WHERE p.id_proveedor=scu.id_proveedor ) :: VARCHAR  AS desc_proveedor,
+(SELECT p.desc_proveedor
+FROM param.vproveedor p
+WHERE p.id_proveedor=scu.id_proveedor ) :: VARCHAR  AS desc_proveedor,
 
-                          (SELECT usu1.cuenta
-                          FROM segu.tusuario usu1
-                          WHERE usu1.id_usuario =scu.id_usuario_reg )  :: VARCHAR  AS usr_reg, 
+(SELECT usu1.cuenta
+FROM segu.tusuario usu1
+WHERE usu1.id_usuario =scu.id_usuario_reg )  :: VARCHAR  AS usr_reg, 
 
-                          (SELECT usu2.cuenta
-                          FROM segu.tusuario usu2
-                          WHERE usu2.id_usuario =scu.id_usuario_mod )  :: VARCHAR  AS usr_mod, 
+(SELECT usu2.cuenta
+FROM segu.tusuario usu2
+WHERE usu2.id_usuario =scu.id_usuario_mod )  :: VARCHAR  AS usr_mod, 
 
-                          (SELECT array_to_string( array_agg( cc.id_competencia), '','' ) 
-                          FROM sigefo.tcurso_competencia cc 
-                          JOIN sigefo.tcurso c ON c.id_curso=cc.id_curso 
-                          WHERE cc.id_curso=scu.id_curso)::VARCHAR AS id_competencias,
-                                                                                                                                  
-                          (SELECT array_to_string( array_agg( co.competencia), ''<br>'' ) 
-                          FROM sigefo.tcurso_competencia cc 
-                          JOIN sigefo.tcurso c ON c.id_curso=cc.id_curso 
-                          JOIN sigefo.tcompetencia co ON co.id_competencia=cc.id_competencia
-                          WHERE cc.id_curso=scu.id_curso)::VARCHAR AS competencias,
+(SELECT array_to_string( array_agg( cc.id_competencia), '','' ) 
+FROM sigefo.tcurso_competencia cc 
+JOIN sigefo.tcurso c ON c.id_curso=cc.id_curso 
+WHERE cc.id_curso=scu.id_curso)::VARCHAR AS id_competencias,
+                                                                                                        
+(SELECT array_to_string( array_agg( co.competencia), ''<br>'' ) 
+FROM sigefo.tcurso_competencia cc 
+JOIN sigefo.tcurso c ON c.id_curso=cc.id_curso 
+JOIN sigefo.tcompetencia co ON co.id_competencia=cc.id_competencia
+WHERE cc.id_curso=scu.id_curso)::VARCHAR AS competencias,
 
-                          (SELECT array_to_string( array_agg( cp.id_planificacion), '','' ) 
-                          FROM sigefo.tcurso_planificacion cp 
-                          JOIN sigefo.tcurso c ON c.id_curso=cp.id_curso 
-                          WHERE cp.id_curso=scu.id_curso)::VARCHAR AS id_planificaciones,
-                                                                                                                                  
-                          (SELECT array_to_string( array_agg( pl.nombre_planificacion), ''<br>'' ) 
-                          FROM sigefo.tcurso_planificacion cp 
-                          JOIN sigefo.tcurso c ON c.id_curso=cp.id_curso 
-                          JOIN sigefo.tplanificacion pl ON pl.id_planificacion=cp.id_planificacion
-                          WHERE cp.id_curso=scu.id_curso)::VARCHAR AS planificaciones,
+(SELECT array_to_string( array_agg( cp.id_planificacion), '','' ) 
+FROM sigefo.tcurso_planificacion cp 
+JOIN sigefo.tcurso c ON c.id_curso=cp.id_curso 
+WHERE cp.id_curso=scu.id_curso)::VARCHAR AS id_planificaciones,
+                                                                                                        
+(SELECT array_to_string( array_agg( pl.nombre_planificacion),''<br>'' ) 
+FROM sigefo.tcurso_planificacion cp 
+JOIN sigefo.tcurso c ON c.id_curso=cp.id_curso 
+JOIN sigefo.tplanificacion pl ON pl.id_planificacion=cp.id_planificacion
+WHERE cp.id_curso=scu.id_curso)::VARCHAR AS planificaciones,
 
-                          (SELECT array_to_string( array_agg( cf.id_funcionario), '','' ) 
-                          FROM sigefo.tcurso_funcionario cf 
-                          JOIN sigefo.tcurso c ON c.id_curso=cf.id_curso 
-                          WHERE cf.id_curso=scu.id_curso)::VARCHAR AS id_funcionarios,
-                                                                                                                                  
-                          (SELECT array_to_string( array_agg(PERSON.nombre_completo2), ''<br>'' ) 
-                          FROM sigefo.tcurso_funcionario cf 
-                          JOIN sigefo.tcurso c ON c.id_curso=cf.id_curso 
-                          JOIN orga.tfuncionario FUNCIO ON FUNCIO.id_funcionario=cf.id_funcionario
-                          JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona                                                   
-                          WHERE cf.id_curso=scu.id_curso)::VARCHAR AS funcionarios
+(SELECT array_to_string( array_agg( cf.id_funcionario), '','' ) 
+FROM sigefo.tcurso_funcionario cf 
+JOIN sigefo.tcurso c ON c.id_curso=cf.id_curso 
+WHERE cf.id_curso=scu.id_curso)::VARCHAR AS id_funcionarios,
+                                                                                                        
+(SELECT array_to_string( array_agg(PERSON.nombre_completo2), ''<br>'' ) 
+FROM sigefo.tcurso_funcionario cf 
+JOIN sigefo.tcurso c ON c.id_curso=cf.id_curso 
+JOIN orga.tfuncionario FUNCIO ON FUNCIO.id_funcionario=cf.id_funcionario
+JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona                                                   
+WHERE cf.id_curso=scu.id_curso)::VARCHAR AS funcionarios
 
-                          FROM sigefo.tcurso scu
-                          JOIN param.tgestion g ON g.id_gestion=scu.id_gestion         
+FROM sigefo.tcurso scu
+JOIN param.tgestion g ON g.id_gestion=scu.id_gestion         
                           
                           WHERE';
-                          v_consulta:=v_consulta || v_parametros.filtro;
+                         /* v_consulta:=v_consulta || v_parametros.filtro;
                           v_consulta:=
                           v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
-                          v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+                          v_parametros.cantidad || ' offset ' || v_parametros.puntero;*/
 
               RETURN v_consulta;
           END;
