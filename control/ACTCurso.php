@@ -10,6 +10,13 @@
 class ACTCurso extends ACTbase{    
 			
 	function listarCurso(){
+		
+		
+		$this->objFunc=$this->create('MODCurso');	
+		$this->res=$this->objFunc->listarCurso($this->objParam);		
+		$this->res->imprimirRespuesta($this->res->generarJson());
+		
+		/*
 		$this->objParam->defecto('ordenacion','id_curso');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
@@ -21,7 +28,7 @@ class ACTCurso extends ACTbase{
 			
 			$this->res=$this->objFunc->listarCurso($this->objParam);
 		}
-		$this->res->imprimirRespuesta($this->res->generarJson());
+		$this->res->imprimirRespuesta($this->res->generarJson());*/
 	}
 				
 	function insertarCurso(){

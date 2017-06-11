@@ -204,11 +204,11 @@ JOIN param.tlugar l ON l.id_lugar=scu.id_lugar
 JOIN param.tlugar lp ON lp.id_lugar=scu.id_lugar_pais
 JOIN param.vproveedor p ON p.id_proveedor= scu.id_proveedor        
                           
-                          WHERE';
-                v_consulta:=v_consulta || v_parametros.filtro;
+                          ';
+               /* v_consulta:=v_consulta || v_parametros.filtro;
                 v_consulta:=
                 v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
-                v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+                v_parametros.cantidad || ' offset ' || v_parametros.puntero;*/
 
               RETURN v_consulta;
           END;
