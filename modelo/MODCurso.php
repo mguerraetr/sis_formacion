@@ -296,7 +296,6 @@ class MODCurso extends MODbase{
 		for($i=1;$i<$tamaño;$i++){			
 			$this->setParametro($arrayMeses[$i],$arrayMeses[$i],'varchar');
 		}
-
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

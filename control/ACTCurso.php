@@ -10,7 +10,6 @@
 class ACTCurso extends ACTbase{    
 			
 	function listarCurso(){
-
 		/*$this->objParam->defecto('ordenacion','id_curso');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
