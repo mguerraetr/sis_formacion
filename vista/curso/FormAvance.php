@@ -22,7 +22,7 @@ Phx.vista.FormAvance= Ext.extend(Phx.gridInterfaz, {
 		this.config=config;
 		v_id_correlativo =this.configMaestro.data.id_correlativo;
 	    arrayMeses=this.configMaestro.data.meses;
-		console.log('-',this.configMaestro.data);
+
 		Phx.CP.loadingShow();	
 		this.storeAtributos= new Ext.data.JsonStore({
 			url:'../../sis_formacion/control/Curso/listarFormCursoAvanceArb',			
@@ -211,7 +211,9 @@ Phx.vista.FormAvance= Ext.extend(Phx.gridInterfaz, {
 	title:'Linea de Avance',
 	ActSave:'../../sis_formacion/control/Curso/insertarAvanceReal',
 	ActDel:'../../sis_formacion/control/LineaAvance/eliminarLineaAvance',
-	ActList:'../../sis_formacion/control/Curso/listarCursoAvanceDinamico',
+	//ActList:'../../sis_formacion/control/Curso/listarCursoAvanceDinamico',
+	ActList:'../../sis_formacion/control/Curso/listarFormCursoAvanceArb',
+	
 	bdel:false,
 	bsave:true, 
 	bedit:false, 

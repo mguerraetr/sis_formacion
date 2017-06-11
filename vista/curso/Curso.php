@@ -915,13 +915,13 @@ header("content-type: text/javascript; charset=UTF-8");
             },
             bdel: true,
             bsave: false,
-            tabeast: 
+           /* tabeast: 
 			[{
 	            url: '../../../sis_formacion/vista/curso/FormCursoAvanceReal.php',
                 title: 'Avance Real',
                 width: 800,
                 cls: 'FormCursoAvanceReal'
-	        }]
+	        }]*/
         }
     )
 </script>
