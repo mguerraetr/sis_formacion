@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION sigefo.ft_curso_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -134,7 +136,11 @@ BEGIN
                           FROM sigefo.tcurso scu
                           JOIN param.tgestion g ON g.id_gestion=scu.id_gestion         
                           
-                          ';
+                          WHERE';
+                          v_consulta:=v_consulta || v_parametros.filtro;
+                          v_consulta:=
+                          v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
+                          v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
               RETURN v_consulta;
           END;
