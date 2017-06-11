@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION sigefo.ft_curso_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -202,60 +204,8 @@ BEGIN
         );
       END LOOP;
 	  --fin inserta a tablas intermedias
-            
-      --obtener valor v_id_curso
-      v_gestion_inicio :=(SELECT g.fecha_ini
-                          FROM sigefo.tcurso c
-                          JOIN param.tgestion g ON g.id_gestion = c.id_gestion
-                          WHERE c.id_gestion = v_parametros.id_gestion 
-                          LIMIT 1);   
-      v_gestion_fin :=(SELECT g.fecha_fin
-                      FROM sigefo.tcurso c
-                      JOIN param.tgestion g ON g.id_gestion = c.id_gestion
-                      WHERE c.id_gestion = v_parametros.id_gestion
-                      LIMIT 1);
-      v_valor_frecuencia := '1' || ' MONTH';
-      v_meses :='';
-      --      
-      WHILE ((SELECT CAST(v_gestion_inicio AS DATE)) <= v_gestion_fin ) LOOP
-      
-          IF((SELECT date_part('month',CAST(v_gestion_inicio AS DATE)))=1)then
-              v_meses := 'Ene'|| (SELECT substring( date_part('year',CAST(v_gestion_inicio AS DATE))::VARCHAR from 3 for 4));
-                              
-              INSERT INTO sigefo.tavance_real
-              						(id_linea,
-                                              mes,
-                                              avance_real,
-                                              avance_previsto,
-                                              estado_reg,
-                                              comentario,
-                                              aprobado_real,
-                                              id_usuario_ai,
-                                              usuario_ai,
-                                              fecha_reg,
-                                              id_usuario_reg,
-                                              id_usuario_mod,
-                                              fecha_mod) 
-                                        VALUES(
-                                              v_id_linea::INTEGER,
-                                              v_meses::VARCHAR,
-                                              0,
-                                              0,
-                                              'activo',
-                                              '',
-                                              'false'::BOOLEAN,
-                                              v_parametros._id_usuario_ai,
-                                              v_parametros._nombre_usuario_ai,
-                                              now(),
-                                              p_id_usuario,
-                                              null,
-                                              null
-                                        );
-                                       -- RAISE EXCEPTION 'Error provocado Juan %',v_meses::VARCHAR;
-                           
-          END IF;	
-      END LOOP;
-      --	
+
+
       
       --Definicion de la respuesta
       v_resp = pxp.f_agrega_clave(v_resp, 'mensaje', 'Cursos almacenado(a) con exito (id_curso' || v_id_curso || ')');
@@ -276,7 +226,7 @@ BEGIN
   ELSIF (p_transaccion = 'SIGEFO_SCU_MOD')
     THEN
 
-      BEGIN
+      BEGIN	
         --Sentencia de la modificacion
         UPDATE sigefo.tcurso
         SET
@@ -302,7 +252,7 @@ BEGIN
           evaluacion        = v_parametros.evaluacion,
           certificacion     = v_parametros.certificacion
         WHERE id_curso = v_parametros.id_curso;
-		
+		 raise exception '>> %',v_parametros.id_competencias;
         --Editar curso competencia
         DELETE FROM sigefo.tcurso_competencia cc
         WHERE cc.id_curso = v_parametros.id_curso;
@@ -327,7 +277,7 @@ BEGIN
             v_id_competencia :: INTEGER
           );
           
-          --raise exception '>> %',v_parametros.id_curso;
+         
         END LOOP;
         -- Editar curso funcionario
         DELETE FROM sigefo.tcurso_funcionario cf
