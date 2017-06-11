@@ -49,9 +49,9 @@ class MODCurso extends MODbase{
 		$this->captura('evaluacion','varchar');
 		$this->captura('certificacion','varchar');
 		
-		$this->captura('gestion','int4');
-		$this->captura('nombre','varchar');
+		$this->captura('gestion','int4');		
 		$this->captura('nombre_pais','varchar');
+		$this->captura('nombre','varchar');
 		$this->captura('desc_proveedor','varchar');
 		
 		$this->captura('usr_reg','varchar');
