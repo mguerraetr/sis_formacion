@@ -20,15 +20,13 @@ Phx.vista.FormCursoAvanceReal = Ext.extend(Phx.arbGridInterfaz, {
 		
     constructor: function (config) {
        	this.maestro=config.maestro;
-				
-		//this.initButtons = [this.cmbGestion];
+		this.initButtons = [this.cmbGestion];
     	
     	//llama al constructor de la clase padre
 		Phx.vista.FormCursoAvanceReal.superclass.constructor.call(this,config);							
 		this.loaderTree.baseParams = {id_gestion: undefined};
 		this.init();
-		
-		//this.cmbGestion.on('select', this.capturaFiltros, this);
+		this.cmbGestion.on('select', this.capturaFiltros, this);
 		
 		this.addButton('btnAvances', {
             text: 'Avances',
@@ -125,7 +123,7 @@ Phx.vista.FormCursoAvanceReal = Ext.extend(Phx.arbGridInterfaz, {
 	//
 	loadValoresIniciales: function () {
         Phx.vista.FormCursoAvanceReal.superclass.loadValoresIniciales.call(this);
-        //this.getComponente('id_gestion').setValue(this.cmbGestion.getValue());
+        this.getComponente('id_gestion').setValue(this.cmbGestion.getValue());
     },   
     //
     onReloadPage: function (m) {     

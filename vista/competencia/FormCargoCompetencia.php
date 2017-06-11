@@ -14,7 +14,6 @@ header("content-type: text/javascript; charset=UTF-8");
 
             constructor: function (config) {
                 this.maestro = config.maestro;
-                //llama al constructor de la clase padre
                 Phx.vista.FormCargoCompetencia.superclass.constructor.call(this, config);
                 this.init();
             },
@@ -112,7 +111,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         anchor: '80%',
                         baseParams: {
                             cod_subsistema: 'SIGEFO',
-                            catalogo_tipo: 'tipocompetencia'
+                            catalogo_tipo: 'tipocompetencia'	
                         },
                         renderer: function (value, p, record) {
                             return String.format('{0}', record.data['tipo']);

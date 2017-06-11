@@ -24,8 +24,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.init();
                 this.load({params: {start: 0, limit: this.tam_pag}})
                 this.iniciarEventos();
-            },
-           
+            },           
             //
             iniciarEventos: function () {
                 this.Cmp.id_lugar_pais.on('select', function (Combo, dato) {
@@ -80,9 +79,7 @@ header("content-type: text/javascript; charset=UTF-8");
 		                    timeout: me.timeout,
 		                    scope: me
 						});
-	            	}			            	
-			            	
-		                     
+	            	}			            				            			                     
         		}					
     	  	},
     	  	//
@@ -743,7 +740,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     type: 'ComboRec',
                     id_grupo: 0,
                     filters: {
-                        pfiltro: 'sigefoco.certificacion',
+                        pfiltro: 'sigefoco.certificacion',	
                         type: 'string'
                     },
                     grid: true,
@@ -872,42 +869,42 @@ header("content-type: text/javascript; charset=UTF-8");
             id_store: 'id_curso',
             fields: [
                 {name: 'id_curso', type: 'numeric'},
-                {name: 'id_gestion', type: 'numeric'},
-                {name: 'id_lugar', type: 'numeric'},
-                {name: 'id_lugar_pais', type: 'numeric'},
-                {name: 'id_proveedor', type: 'numeric'},
-                {name: 'horas', type: 'numeric'},
-                {name: 'cod_tipo', type: 'string'},
-                {name: 'cod_prioridad', type: 'string'},
-                {name: 'evaluacion', type: 'string'},
-                {name: 'certificacion', type: 'string'},
-                {name: 'cod_clasificacion', type: 'string'},
-                {name: 'nombre_curso', type: 'string'},
-                {name: 'expositor', type: 'string'},
-                {name: 'origen', type: 'string'},
-                {name: 'fecha_inicio', type: 'date', dateFormat: 'Y-m-d'},
+                {name: 'id_gestion', type: 'numeric',sortable: true},
+                {name: 'id_lugar', type: 'numeric',sortable: true},
+                {name: 'id_lugar_pais', type: 'numeric',sortable: true},
+                {name: 'id_proveedor', type: 'numeric',sortable: true},
+                {name: 'horas', type: 'numeric',sortable: true},
+                {name: 'cod_tipo', type: 'string',sortable: true},
+                {name: 'cod_prioridad', type: 'string',sortable: true},
+                {name: 'evaluacion', type: 'string',sortable: true},
+                {name: 'certificacion', type: 'string',sortable: true},
+                {name: 'cod_clasificacion', type: 'string',sortable: true},
+                {name: 'nombre_curso', type: 'string',sortable: true},
+                {name: 'expositor', type: 'string',sortable: true},
+                {name: 'origen', type: 'string',sortable: true},
+                {name: 'fecha_inicio', type: 'date', dateFormat: 'Y-m-d',sortable: true},
                 {name: 'estado_reg', type: 'string'},
-                {name: 'objetivo', type: 'string'},
-                {name: 'contenido', type: 'string'},
+                {name: 'objetivo', type: 'string',sortable: true},
+                {name: 'contenido', type: 'string',sortable: true},
                 {name: 'fecha_fin', type: 'date', dateFormat: 'Y-m-d'},
                 {name: 'id_usuario_ai', type: 'numeric'},
                 {name: 'fecha_reg', type: 'date', dateFormat: 'Y-m-d H:i:s.u'},
                 {name: 'usuario_ai', type: 'string'},
                 {name: 'id_usuario_reg', type: 'numeric'},
                 {name: 'id_usuario_mod', type: 'numeric'},
-                {name: 'fecha_mod', type: 'date', dateFormat: 'Y-m-d H:i:s.u'},
-                {name: 'usr_reg', type: 'string'},
-                {name: 'usr_mod', type: 'string'},
-                {name: 'gestion', type: 'string'},
-                {name: 'nombre', type: 'string'},
-                {name: 'nombre_pais', type: 'string'},
-                {name: 'desc_proveedor', type: 'string'},
-                {name: 'id_competencias', type: 'string'},
-                {name: 'competencias', type: 'string'},
-                {name: 'id_planificaciones', type: 'string'},
-                {name: 'planificaciones', type: 'string'},
-                {name: 'id_funcionarios', type: 'string'},
-                {name: 'funcionarios', type: 'string'}
+                {name: 'fecha_mod', type: 'date', dateFormat: 'Y-m-d H:i:s.u',sortable: true},
+                {name: 'usr_reg', type: 'string',sortable: true},
+                {name: 'usr_mod', type: 'string',sortable: true},
+                {name: 'gestion', type: 'string',sortable: true},
+                {name: 'nombre', type: 'string',sortable: true},
+                {name: 'nombre_pais', type: 'string',sortable: true},
+                {name: 'desc_proveedor', type: 'string',sortable: true},
+                {name: 'id_competencias', type: 'string',sortable: true},
+                {name: 'competencias', type: 'string',sortable: true},
+                {name: 'id_planificaciones', type: 'string',sortable: true},
+                {name: 'planificaciones', type: 'string',sortable: true},
+                {name: 'id_funcionarios', type: 'string',sortable: true},
+                {name: 'funcionarios', type: 'string',sortable: true}
             ],
             sortInfo: {
                 field: 'id_curso',

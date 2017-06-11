@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION sigefo.ft_curso_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -70,7 +68,7 @@ BEGIN
   THEN
 
     BEGIN
-      
+
       --Sentencia de la insercion
       INSERT INTO sigefo.tcurso (
         id_gestion,
@@ -125,6 +123,7 @@ BEGIN
       )
       RETURNING id_curso
         INTO v_id_curso;
+             
       --inserta a tablas intermedias  
       va_id_competencias := string_to_array(v_parametros.id_competencias, ',');
 		
@@ -204,8 +203,6 @@ BEGIN
         );
       END LOOP;
 	  --fin inserta a tablas intermedias
-
-
       
       --Definicion de la respuesta
       v_resp = pxp.f_agrega_clave(v_resp, 'mensaje', 'Cursos almacenado(a) con exito (id_curso' || v_id_curso || ')');
@@ -252,7 +249,7 @@ BEGIN
           evaluacion        = v_parametros.evaluacion,
           certificacion     = v_parametros.certificacion
         WHERE id_curso = v_parametros.id_curso;
-		 raise exception '>> %',v_parametros.id_competencias;
+
         --Editar curso competencia
         DELETE FROM sigefo.tcurso_competencia cc
         WHERE cc.id_curso = v_parametros.id_curso;
@@ -275,9 +272,7 @@ BEGIN
             v_parametros._id_usuario_ai,
             v_parametros.id_curso,
             v_id_competencia :: INTEGER
-          );
-          
-         
+          );                   
         END LOOP;
         -- Editar curso funcionario
         DELETE FROM sigefo.tcurso_funcionario cf
@@ -308,6 +303,7 @@ BEGIN
             NULL
           );
         END LOOP;
+        
         -- Editar curso planificacion
         DELETE FROM sigefo.tcurso_planificacion cp
         WHERE cp.id_curso = v_parametros.id_curso;
@@ -416,9 +412,7 @@ BEGIN
                 v_resp = pxp.f_agrega_clave(v_resp,'mensaje','estado gestion'); 
                 v_resp = pxp.f_agrega_clave(v_resp,'Meses','%'||v_meses||'%'::varchar);
                 RETURN v_resp;						
-		END;
-        
-        
+		END;                
 
 	/*********************************    
  	#TRANSACCION:  'SIGEFO_CUR_AREAL_MOD'
