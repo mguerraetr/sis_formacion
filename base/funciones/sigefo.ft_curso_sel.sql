@@ -134,9 +134,7 @@ JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
 WHERE cf.id_curso=scu.id_curso)::VARCHAR AS funcionarios
 
 FROM sigefo.tcurso scu
-JOIN param.tgestion g ON g.id_gestion=scu.id_gestion         
-                          
-                          ';
+JOIN param.tgestion g ON g.id_gestion=scu.id_gestion ';
                          /* v_consulta:=v_consulta || v_parametros.filtro;
                           v_consulta:=
                           v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
